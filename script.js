@@ -1,9 +1,11 @@
 let yoda;
 let bg;
 let storm;
-let stormArr = [];
+let stormArr =[];
 const topOfBoard = 50;
 const bottomOfBoard = 330;
+let score = 0;
+let test = 0;
 
 function preload() {
   bg = loadImage("./IMAGES/2109.w023.n001.1040B.p1.1040.jpg");
@@ -17,72 +19,63 @@ class BabyYoda {
     this.y = 330;
     this.speedY = 0;
     this.gravity = 3;
+    this.width = 200
+    this.height = 150;
+
   }
 
   show() {
-    image(yodaImg, this.x, this.y, 180, 150);
+    image(yodaImg, this.x, this.y, this.width, this.height);
   }
   
 }
 
 class Enemies {
     constructor() {
-        this.x1 = 1210;
-        this.y1 = 270;
-     // this.speedY = 0;
-     // this.gravity = 3;
+        this.x = 1400;
+        this.y = 280;
+        this.width = 250;
+        this.height = 250;
     }
   
+   
+
     show() {
-      image(stormImg, this.x1, this.y1, 250, 250);
+      image(stormImg, this.x, this.y, this.width, this.height);
     }
 
     move(){
-        this.x1 -= 3;
-    }
+      this.x -= 3;
+  }
+
+  hits(target){
+    if(target.x < this.x + this.width &&
+       target.x + target.width >= this.x &&
+       target.y < this.y + this.height &&
+       target.height + target.y > this.y){
+        return true
+      }
+  }
+
+
+  offscreen(){
+      if(this.x < -this.width){
+        return true;
+      }
+  }
 
 }
-/*
-function createEnemies(){
-    let randomNumber = Math.random();
-    if(randomNumber < 0.00011){
-    stormArr.push(new Enemies())
-    }
-};*/
+
+
 
 function createEnemies(){
     let randomNumber = Math.random();
-    if(randomNumber < 0.00011){
+    if(randomNumber < 0.005){
     stormArr.push(new Enemies())
     }
-    return stormArr;
 };
 
 
-
-/*function keyPressed(obj) {
-  if (keyIsDown(ENTER)) {
-    obj.y -= 30;
-    obj.vy = 5;
-  } else {
-    obj.y = 330;
-  }
-  if (obj.y < 10) {
-    obj.y = 330;
-  }
-}
-
-function keyPressed(obj) {
-    if (keyIsDown(ENTER)) {
-        obj.vy = -5;
-        obj.y += obj.vy;
-        obj.vy += obj.grav;
-       
-    } else {
-        obj.y -= obj.vy;
-    }
-
-  }*/
 
 function keyPressed(obj) {
   if (keyIsDown(ENTER)) {
@@ -102,25 +95,35 @@ function keyPressed(obj) {
   }
 }
 
-/*function enemiesMoving(arr){
-    arr.x1 -= 3;
-}*/
+
+
+
 
 function setup() {
   createCanvas(1400, 500);
   yoda = new BabyYoda();
-  createEnemies();  
- //storm = new Enemies();
- 
+  
 }
 
 function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  createEnemies();  
- // stormArr.move();
-  //stormArr.show();
+  createEnemies();
+  stormArr.forEach(function(obstacle){
+    obstacle.show();
+    obstacle.move();
+    if(obstacle.hits(yoda)){
+      noLoop();
+    }
+    if(obstacle.offscreen()){
+      stormArr.splice(obstacle, 1);
+      score ++;
+    };
+   
+    
+  });
+  
 }
 
 /*
