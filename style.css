@@ -4,8 +4,39 @@ body {
     /*padding: 0;*/
 }
 
-canvas{
-    
+canvas {
     padding: 20vh 4vw;
+}
 
+.start{
+    display: flex;
+    flex-direction: column;
+}
+
+.start > h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 10vh;
+    text-align: center;
+}
+
+.button {
+  background-color: white;
+  border: none;
+  color: black;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 8vh;
+  font-weight: 650;
+  padding: 2vh 6vh;
+  align-self: center;
+}
+
+
+.start > p {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4vh;
+    color: white;
+    align-self: center;
+    text-align: center;
+    margin-top: 7vh;
+   
 }
