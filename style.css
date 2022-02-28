@@ -3,10 +3,12 @@ body {
     background-color: rgb(91, 192, 133);
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 canvas {
     padding: 20vh 4vw;
+    
 }
 
 .start{
