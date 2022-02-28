@@ -13,9 +13,8 @@ let gameScreen = document.querySelector("#game-screen");
 let finalScreen = document.querySelector("#final-screen");
 
 //Buttons
-let startButton = document.querySelector
-
-
+let startButton = document.querySelector("#start-button");
+let tryAgainButton = document.querySelector("#try-again-button");
 
 function preload() {
   bg = loadImage("./IMAGES/2109.w023.n001.1040B.p1.1040.jpg");
@@ -80,7 +79,7 @@ class Frogs {
   }
 }
 
-function collision (element1, element2){
+function collision(element1, element2) {
   if (
     element1.x < element2.x + element2.width &&
     element1.x + element1.width >= element2.x &&
@@ -88,6 +87,16 @@ function collision (element1, element2){
     element1.height + element1.y > element2.y
   ) {
     return true;
+  }
+}
+
+function collision2() {
+  for (let i = 0; i < stormArr.length; i++) {
+    for (let j = 0; j < frogArr.length; j++) {
+      if (collision(stormArr[i], frogArr[j])) {
+        stormArr.splice(stormArr[i], 1);
+      }
+    }
   }
 }
 
@@ -110,8 +119,8 @@ function keyPressed(obj) {
 }
 
 function setup() {
-  createCanvas(1400, 500);
-  //canvas.parent("#game-screen")
+  let canvas = createCanvas(1400, 500);
+  canvas.parent("#game-screen")
   yoda = new BabyYoda();
 }
 
@@ -119,20 +128,20 @@ function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  if (frameCount % 150 === 0) {
+  if (frameCount % 300 === 0) {
     stormArr.push(new Enemies());
   }
-  if (frameCount % 349 === 0) {
+  if (frameCount % 270 === 0) {
     frogArr.push(new Frogs());
   }
-  //collision2();
- stormArr.forEach(function (obstacle) {
+  collision2();
+  stormArr.forEach(function (obstacle) {
     obstacle.show();
     obstacle.move();
-    if(collision(yoda, obstacle)){
+    if (collision(yoda, obstacle)) {
       noLoop();
     }
-    
+
     if (obstacle.offscreen()) {
       stormArr.splice(obstacle, 1);
     }
@@ -141,8 +150,8 @@ function draw() {
   frogArr.forEach(function (frog) {
     frog.show();
     frog.move();
-    if(collision(yoda, frog)){
-      score ++;
+    if (collision(yoda, frog)) {
+      score++;
       frogArr.splice(frog, 1);
     }
   });
@@ -150,46 +159,24 @@ function draw() {
 
 /*
 window.onload = () => {
-    document.getElementById("start-button").onclick = () => {
+    startButton.onclick = () => {
         startGame();
     };
-    document.getElementById("restart-button").onclick = () => {
-        startGame
+    document.getElementById("tryAgainButton").onclick = () => {
+        startGame //();???
     };
 };
 
 function startGame() {
-    const gameIntro = document.querySelector("intro");
-    gameIntro.style.display = "none";
+    
+    initialScreen.style.display = "none";
 
-    const gameOver = document.querySelector("over");
-    gameOver.style.display = "none";
+    finalScreen.style.display = "none";
 
-    const gameBoard = document.getElementById("board");
-    bottomOfBoard.style.display = "flex";
+    gameScreen.style.display = "flex";
     loop()
 }
 */
-
-
-
-
-function collision2 (){
-    for(let i = 0; i < stormArr.length; i ++){
-      for(let j = 0; j< frogArr.length; j++){
-        if (
-          stormArr[i].x < frogArr[j].x + frogArr[j].width &&
-          stormArr[i].x + stormArr[i].width >= frogArr[j].x &&
-          stormArr[i].y < frogArr[j].y +frogArr[j].height &&
-          stormArr[i].height + stormArr[i].y > frogArr[j].y
-        ) {
-          stormArr.splice(stormArr[i], 1)
-        }
-      }
-    }
-}
-
-
 
 
 
@@ -541,5 +528,4 @@ function startGame() {
     bottomOfBoard.style.display = "flex";
     loop()
 }
-
-
+*/
