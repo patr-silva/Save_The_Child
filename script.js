@@ -32,7 +32,7 @@ function preload() {
 class BabyYoda {
   constructor() {
     this.x = 20;
-    this.y = 330;
+    this.y = 360;
     this.speedY = 0;
     this.gravity = 3;
     this.width = 140;
@@ -57,7 +57,7 @@ class Enemies {
   }
 
   move() {
-    this.x -= 3;
+    this.x -= 4;
   }
 
   offscreen() {
@@ -70,7 +70,7 @@ class Enemies {
 class Frogs {
   constructor() {
     this.x = 1400;
-    this.y = 420;
+    this.y = 400;
     this.width = 85;
     this.height = 80;
   }
@@ -79,7 +79,7 @@ class Frogs {
   }
 
   move() {
-    this.x -= 3;
+    this.x -= 4;
   }
 }
 
@@ -94,7 +94,7 @@ function collision(element1, element2) {
   }
 }
 
-function collision2() {
+function overlap() {
   for (let i = 0; i < stormArr.length; i++) {
     for (let j = 0; j < frogArr.length; j++) {
       if (collision(stormArr[i], frogArr[j])) {
@@ -133,13 +133,13 @@ function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  if (frameCount % 650 === 0) {
+  if (frameCount % 250 === 0) {
     stormArr.push(new Enemies());
   }
-  if (frameCount % 270 === 0) {
+  if (frameCount % 476 === 0) {
     frogArr.push(new Frogs());
   }
-  collision2();
+  overlap();
   stormArr.forEach(function (obstacle) {
     obstacle.show();
     obstacle.move();
@@ -189,6 +189,12 @@ function gameOver(){
 
   finalScoreSpan.innerText = score;
 
+  tryAgainButton.addEventListener("click", () => {
+   
+    startGame();
+  
+  });
+
 }
 
 
@@ -206,18 +212,6 @@ window.onload = () => {
    
 };
 
-tryAgainButton.addEventListener("click", () => {
-
-  initialScreen.style.display = "none";
- 
- gameScreen.style.display = "flex";
- 
- finalScreen.style.display = "none";
- 
-  startGame();
-
-  loop();
-});
 
 
 
@@ -226,22 +220,7 @@ tryAgainButton.addEventListener("click", () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-let yoda;
+/*let yoda;
 let bg;
 let storm;
 let stormArr = [];
@@ -256,9 +235,12 @@ let gameScreen = document.querySelector("#game-screen");
 let finalScreen = document.querySelector("#final-screen");
 
 //Buttons
-let startButton = document.querySelector
+let startButton = document.querySelector("#start-button");
+let tryAgainButton = document.querySelector("#try-again-button");
 
-
+//Values
+let scoreSpan = document.querySelector("#score-value");
+let finalScoreSpan = document.querySelector("#final-score-value");
 
 function preload() {
   bg = loadImage("./IMAGES/2109.w023.n001.1040B.p1.1040.jpg");
@@ -299,23 +281,8 @@ class Enemies {
   move() {
     this.x -= 3;
   }
-/*
-  hits(target) {
-    if (
-      target.x < this.x + this.width &&
-      target.x + target.width >= this.x &&
-      target.y < this.y + this.height &&
-      target.height + target.y > this.y
-    ) {
-      return true;
-    }
-  }
 
-  offscreen() {
-    if (this.x < -this.width) {
-      return true;
-    }
-  }
+  
 }
 
 class Frogs {
@@ -332,20 +299,62 @@ class Frogs {
   move() {
     this.x -= 3;
   }
-/*
-  hits(player) {
-    if (
-      player.x < this.x + this.width &&
-      player.x + player.width >= this.x &&
-      player.y < this.y + this.height &&
-      player.height + player.y > this.y
-    ) {
-      return true;
-    }
+}
+
+function elementsFrequency() {
+  if (frameCount % 232 === 0) {
+    stormArr.push(new Enemies());
+  }
+  if (frameCount % 179 === 0) {
+    frogArr.push(new Frogs());
   }
 }
 
-function collision (element1, element2){
+function obstaclesAppearing() {
+  stormArr.forEach(function (obstacle) {
+    obstacle.show();
+    obstacle.move();
+    if (collision(yoda, obstacle)) {
+      gameOver();
+    }
+
+    if (obstacle.offscreen()) {
+      stormArr.splice(obstacle, 1);
+    }
+  });
+}
+
+function frogsAppearing() {
+  frogArr.forEach(function (frog) {
+    frog.show();
+    frog.move();
+    if (collision(yoda, frog)) {
+      score++;
+      scoreSpan.innerText = score;
+      frogArr.splice(frog, 1);
+    }
+  });
+}
+
+function keyPressed(obj) {
+  if (keyIsDown(ENTER)) {
+    obj.speedY = -5;
+    obj.y += obj.speedY;
+    obj.speedY += obj.gravity;
+  } else {
+    obj.y -= obj.speedY;
+  }
+
+  if (obj.y < topOfBoard) {
+    obj.y = topOfBoard;
+  }
+
+  if (obj.y > bottomOfBoard) {
+    obj.y = bottomOfBoard;
+  }
+}
+
+function collision(element1, element2) {
   if (
     element1.x < element2.x + element2.width &&
     element1.x + element1.width >= element2.x &&
@@ -356,27 +365,20 @@ function collision (element1, element2){
   }
 }
 
-function keyPressed(obj) {
-  if (keyIsDown(ENTER)) {
-    obj.speedY = -5;
-    obj.y += obj.speedY;
-    obj.speedY += obj.gravity;
-  } else {
-    obj.y -= obj.speedY;
-  }
-
-  if (obj.y < topOfBoard) {
-    obj.y = topOfBoard;
-  }
-
-  if (obj.y > bottomOfBoard) {
-    obj.y = bottomOfBoard;
+function overlap() {
+  for (let i = 0; i < stormArr.length; i++) {
+    for (let j = 0; j < frogArr.length; j++) {
+      if (collision(stormArr[i], frogArr[j])) {
+        stormArr.splice(stormArr[i], 1);
+      }
+    }
   }
 }
 
 function setup() {
-  createCanvas(1400, 500);
-  //canvas.parent("#game-screen")
+  let canvas = createCanvas(1400, 500);
+  canvas.parent("#game-screen");
+  noLoop();
   yoda = new BabyYoda();
 }
 
@@ -384,204 +386,67 @@ function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  if (frameCount % 150 === 0) {
-    stormArr.push(new Enemies());
-  }
-  if (frameCount % 349 === 0) {
-    frogArr.push(new Frogs());
-  }
-/*
- stormArr.forEach(function (obstacle) {
-    obstacle.show();
-    obstacle.move();
-    /*if (obstacle.hits(yoda)) {
-      noLoop();
-    }
-    if(collision(yoda, obstacle)){
-      noLoop();
-    }
-    if (obstacle.offscreen()) {
-      stormArr.splice(obstacle, 1);
-      
-    }
-  });
-
-  frogArr.forEach(function (frog) {
-    frog.show();
-    frog.move();
-  /*  if (frog.hits(yoda)) {
-      score ++;
-      frogArr.splice(frog, 1);
-    }
-    if(collision(yoda, frog)){
-      score ++;
-      frogArr.splice(frog, 1);
-    }
-  });
-}*/
-
-/*
-window.onload = () => {
-    document.getElementById("start-button").onclick = () => {
-        startGame();
-    };
-    document.getElementById("restart-button").onclick = () => {
-        startGame
-    };
-};
-
-function startGame() {
-    const gameIntro = document.querySelector("intro");
-    gameIntro.style.display = "none";
-
-    const gameOver = document.querySelector("over");
-    gameOver.style.display = "none";
-
-    const gameBoard = document.getElementById("board");
-    bottomOfBoard.style.display = "flex";
-    loop()
+  elementsFrequency();
+  obstaclesAppearing();
+  frogsAppearing();
+  overlap();
 }
+
+function gameOver() {
+ 
+  initialScreen.style.display = "none";
+
+  gameScreen.style.display = "none";
+
+  finalScreen.style.display = "flex";
+
+  finalScoreSpan.innerText = score;
+
+  noLoop();
+
+}
+
+window.addEventListener("load", () => {
+  initialScreen.style.display = "flex";
+
+  gameScreen.style.display = "none";
+
+  finalScreen.style.display = "none";
+
+  noLoop()
+
+  startButton.onclick = () => {
+    initialScreen.style.display = "none";
+
+    finalScreen.style.display = "none";
+    
+    gameScreen.style.display = "flex";
+    
+    loop();
+  };
+
+  
+});
+
+tryAgainButton.onclick = () => {
+   
+   
+    score = 0;
+    initialScreen.style.display = "none";
+    gameScreen.style.display = "flex";
+    finalScreen.style.display = "none";
+    yoda.show();
+    elementsAppearing();
+    collision2();
+    obstaclesAppearing();
+    bonusAppearing();
+  
+    loop();
+  }
 */
-/*
-let yoda;
-let bg;
-let storm;
-let stormArr = [];
-const topOfBoard = 50;
-const bottomOfBoard = 330;
-let score = 0;
-
-//let board = document.querySelectorAll('#game-screen');
 
 
-function preload() {
-  bg = loadImage("./IMAGES/2109.w023.n001.1040B.p1.1040.jpg");
-  yodaImg = loadImage("./IMAGES/BY3.png");
-  stormImg = loadImage("./IMAGES/Stormtrooper 2.png");
-}
-
-class BabyYoda {
-  constructor() {
-    this.x = 20;
-    this.y = 330;
-    this.speedY = 0;
-    this.gravity = 3;
-    this.width = 140;
-    this.height = 120;
-  }
-
-  show() {
-    image(yodaImg, this.x, this.y, this.width, this.height);
-  }
-}
-
-class Enemies {
-  constructor() {
-    this.x = 1400;
-    this.y = 305;
-    this.width = 115;
-    this.height = 190;
-  }
-
-  show() {
-    image(stormImg, this.x, this.y, this.width, this.height);
-  }
-
-  move() {
-    this.x -= 3;
-  }
-
-  hits(target) {
-    if (
-      target.x < this.x + this.width &&
-      target.x + target.width >= this.x &&
-      target.y < this.y + this.height &&
-      target.height + target.y > this.y
-    ) {
-      return true;
-    }
-  }
-
-  offscreen() {
-    if (this.x < -this.width) {
-      return true;
-    }
-  }
-}
-
-function createEnemies() {
-  let randomNumber = Math.random();
-  if (randomNumber < 0.005) {
-    stormArr.push(new Enemies());
-  }
-}
-
-function keyPressed(obj) {
-  if (keyIsDown(ENTER)) {
-    obj.speedY = -5;
-    obj.y += obj.speedY;
-    obj.speedY += obj.gravity;
-  } else {
-    obj.y -= obj.speedY;
-  }
-
-  if (obj.y < topOfBoard) {
-    obj.y = topOfBoard;
-  }
-
-  if (obj.y > bottomOfBoard) {
-    obj.y = bottomOfBoard;
-  }
-
-}
-
-function setup() {
-createCanvas(1400, 500);
- //canvas.parent("#game-screen")
-  yoda = new BabyYoda();
-}
-
-if(frameCount % 60 === 0){
-  stormArr.push(new Enemies())
-}
-function draw() {
-  background(bg);
-  yoda.show();
-  keyPressed(yoda);
-  createEnemies();
-
-  stormArr.forEach(function (obstacle) {
-    obstacle.show();
-    obstacle.move();
-    if (obstacle.hits(yoda)) {
-      noLoop();
-    }
-    if (obstacle.offscreen()) {
-      stormArr.splice(obstacle, 1);
-      score++;
-    }
-  });
-}
 
 
-window.onload = () => {
-    document.getElementById("start-button").onclick = () => {
-        startGame();
-    };
-    document.getElementById("restart-button").onclick = () => {
-        startGame
-    };
-};
 
-function startGame() {
-    const gameIntro = document.querySelector("intro");
-    gameIntro.style.display = "none";
 
-    const gameOver = document.querySelector("over");
-    gameOver.style.display = "none";
-
-    const gameBoard = document.getElementById("board");
-    bottomOfBoard.style.display = "flex";
-    loop()
-}
-*/
