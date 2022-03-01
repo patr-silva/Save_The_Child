@@ -133,7 +133,7 @@ function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  if (frameCount % 300 === 0) {
+  if (frameCount % 650 === 0) {
     stormArr.push(new Enemies());
   }
   if (frameCount % 270 === 0) {
@@ -157,10 +157,24 @@ function draw() {
     frog.move();
     if (collision(yoda, frog)) {
       score++;
+      scoreSpan.innerText = score;
       frogArr.splice(frog, 1);
     }
   });
 }
+
+
+function startGame() {
+    
+  initialScreen.style.display = "none";
+
+  finalScreen.style.display = "none";
+
+  gameScreen.style.display = "flex";
+
+  loop()
+}
+
 
 
 function gameOver(){
@@ -174,29 +188,39 @@ function gameOver(){
   finalScreen.style.display = "flex";
 
   finalScoreSpan.innerText = score;
-  
+
 }
 
 
 window.onload = () => {
-    startButton.onclick = () => {
-        startGame();
-    };
-    tryAgainButton.onclick = () => {
-        startGame();
-    };
+
+  initialScreen.style.display = "flex";
+
+  gameScreen.style.display = "none";
+
+  finalScreen.style.display = "none";
+
+  startButton.onclick = () => {
+    startGame();
+  };
+   
 };
 
-function startGame() {
-    
-    initialScreen.style.display = "none";
+tryAgainButton.addEventListener("click", () => {
 
-    finalScreen.style.display = "none";
+  initialScreen.style.display = "none";
+ 
+ gameScreen.style.display = "flex";
+ 
+ finalScreen.style.display = "none";
+ 
+  startGame();
 
-    gameScreen.style.display = "flex";
+  loop();
+});
 
-    loop()
-}
+
+
 
 
 
