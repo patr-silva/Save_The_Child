@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    overflow: hidden;
+   /* overflow: hidden;*/
   }
 
   body {
@@ -42,7 +42,7 @@
 
 .start > img  {
     width: 15vw;
-    margin-bottom: 8vh;
+    margin-bottom: 7vh;
     align-self: center;
     position: relative;
 }
@@ -66,8 +66,8 @@
     color: white;
     align-self: center;
     text-align: center;
-    margin-top: 8vh;
-    margin-bottom: 6vh;
+    margin-top: 5vh;
+    margin-bottom: 7vh;
 }
 
 .game {
@@ -75,7 +75,6 @@
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    padding: 0;
     margin-top: 30vh;
 }
 
@@ -84,30 +83,30 @@
     font-size: 7vh;
     text-align: right;
     margin-right: 10vw;
-    margin-bottom: -8.5vh;
+    margin-bottom: -10vh;
 }
-
 
 canvas {
     z-index: -1;
     align-self: center;
+    margin-bottom: 30vh;
 }
 
-
-
 .final {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    margin: 0;
-    padding: 0;
+    
 }
 
 .final > image {
-    width: 120%;
-    height: 140%;
-    object-fit: contain;
+    width: 100vw;
+    height: 100vh;
+    margin:auto;
+    object-fit: cover;
     z-index: -1;
     position: absolute;
 }
@@ -144,9 +143,10 @@ canvas {
 }
 
 .final > img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: 100vw;
+    height: 110vh;
+    margin:auto;
+    object-fit: cover;
     z-index: -1;
     position: absolute;
 }

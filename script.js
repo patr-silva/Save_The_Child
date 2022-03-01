@@ -16,6 +16,10 @@ let finalScreen = document.querySelector("#final-screen");
 let startButton = document.querySelector("#start-button");
 let tryAgainButton = document.querySelector("#try-again-button");
 
+//Values
+let scoreSpan = document.querySelector("#score-value");
+let finalScoreSpan = document.querySelector("#final-score-value");
+
 function preload() {
   bg = loadImage("./IMAGES/2109.w023.n001.1040B.p1.1040.jpg");
   yodaImg = loadImage("./IMAGES/BY3.png");
@@ -120,7 +124,8 @@ function keyPressed(obj) {
 
 function setup() {
   let canvas = createCanvas(1400, 500);
-  canvas.parent("#game-screen")
+  canvas.parent("#game-screen");
+  noLoop();
   yoda = new BabyYoda();
 }
 
@@ -139,7 +144,7 @@ function draw() {
     obstacle.show();
     obstacle.move();
     if (collision(yoda, obstacle)) {
-      noLoop();
+      gameOver();
     }
 
     if (obstacle.offscreen()) {
@@ -157,13 +162,28 @@ function draw() {
   });
 }
 
-/*
+
+function gameOver(){
+
+  noLoop(); 
+
+  initialScreen.style.display = "none";
+
+  gameScreen.style.display = "none";
+
+  finalScreen.style.display = "flex";
+
+  finalScoreSpan.innerText = score;
+  
+}
+
+
 window.onload = () => {
     startButton.onclick = () => {
         startGame();
     };
-    document.getElementById("tryAgainButton").onclick = () => {
-        startGame //();???
+    tryAgainButton.onclick = () => {
+        startGame();
     };
 };
 
@@ -174,9 +194,21 @@ function startGame() {
     finalScreen.style.display = "none";
 
     gameScreen.style.display = "flex";
+
     loop()
 }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
