@@ -57,7 +57,7 @@ class Enemies {
   }
 
   move() {
-    this.x -= 4;
+    this.x -= 6;
   }
 
   offscreen() {
@@ -79,7 +79,7 @@ class Frogs {
   }
 
   move() {
-    this.x -= 4;
+    this.x -= 6;
   }
 }
 
@@ -160,36 +160,15 @@ function draw() {
   background(bg);
   yoda.show();
   keyPressed(yoda);
-  if (frameCount % 250 === 0) {
+  if (frameCount % 300 === 0) {
     stormArr.push(new Enemies());
   }
-  if (frameCount % 476 === 0) {
+  if (frameCount % 475 === 0) {
     frogArr.push(new Frogs());
   }
   overlap();
   obstaclesAppearing();
   frogsAppearing();
- /* stormArr.forEach(function (obstacle) {
-    obstacle.show();
-    obstacle.move();
-    if (collision(yoda, obstacle)) {
-      gameOver();
-    }
-
-    if (obstacle.offscreen()) {
-      stormArr.splice(obstacle, 1);
-    }
-  });
-
-  frogArr.forEach(function (frog) {
-    frog.show();
-    frog.move();
-    if (collision(yoda, frog)) {
-      score++;
-      scoreSpan.innerText = score;
-      frogArr.splice(frog, 1);
-    }
-  });*/
 }
 
 
@@ -219,23 +198,28 @@ function gameOver(){
 
   tryAgainButton.onclick = () => {
 
+    score = 0;
+
+    scoreSpan.innerText = score;
+
     initialScreen.style.display = "none";
 
     finalScreen.style.display = "none";
   
     gameScreen.style.display = "flex";
 
-    score = 0;
+
+    stormArr = [];
+    frogArr = [];
 
     obstaclesAppearing();
 
     frogsAppearing();
 
+    loop();
 
   };
-
 }
-
 
 
 window.onload = () => {
