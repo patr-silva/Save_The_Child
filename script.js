@@ -83,7 +83,7 @@ class Frogs {
   }
 }
 
-function obstaclesAppearing() {
+function creatObstacles() {
   stormArr.forEach(function (obstacle) {
     obstacle.show();
     obstacle.move();
@@ -97,7 +97,7 @@ function obstaclesAppearing() {
   });
 }
 
-function frogsAppearing() {
+function creatFrogs() {
   frogArr.forEach(function (frog) {
     frog.show();
     frog.move();
@@ -121,7 +121,7 @@ function collision(element1, element2) {
   }
 }
 
-function overlap() {
+function avoidIntersection() {
   for (let i = 0; i < stormArr.length; i++) {
     for (let j = 0; j < frogArr.length; j++) {
       if (collision(stormArr[i], frogArr[j])) {
@@ -166,9 +166,9 @@ function draw() {
   if (frameCount % 475 === 0) {
     frogArr.push(new Frogs());
   }
-  overlap();
-  obstaclesAppearing();
-  frogsAppearing();
+  avoidIntersection();
+  creatObstacles();
+  creatFrogs();
 }
 
 
@@ -186,7 +186,7 @@ function startGame() {
 
 function gameOver(){
 
-  noLoop(); //???
+  noLoop(); 
 
   initialScreen.style.display = "none";
 
@@ -212,9 +212,9 @@ function gameOver(){
     stormArr = [];
     frogArr = [];
 
-    obstaclesAppearing();
+    creatObstacles();
 
-    frogsAppearing();
+    creatFrogs();
 
     loop();
 
